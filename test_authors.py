@@ -18,7 +18,3 @@ def test_get_books_from_author():
     aleph = Book("The Aleph", author=borges)
 
     assert borges.get_books() == [ficciones, aleph]
-ciones = Book("Ficciones", author=borges)
-        aleph = Book("The Aleph", author=borges)
-
-        self.assertEqual(borges.get_books(), [ficciones, aleph])

@@ -18,8 +18,3 @@ def test_book_creation():
 
     assert raven.title == "The Raven"
     assert raven.author == poe
-le, "The Aleph")
-        self.assertEqual(aleph.author, borges)
-
-        self.assertEqual(raven.title, "The Raven")
-        self.assertEqual(raven.author, poe)
