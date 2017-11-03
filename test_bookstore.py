@@ -1,74 +1,79 @@
-import unittest
+import pytest
+from argparse import Namespace
 
 from bookstore import Bookstore, Book, Author
 
 
-class BookstoreTestCase(unittest.TestCase):
-    def setUp(self):
-        self.borges = Author("Jorge Luis Borges", "AR")
-        self.poe = Author('Edgar Allan Poe', 'US')
+@pytest.fixture
+def fixtures():
+    fix = Namespace()
 
-        self.ficciones = Book("Ficciones", author=self.borges)
-        self.aleph = Book("The Aleph", author=self.borges)
-        self.raven = Book("The Raven", author=self.poe)
+    fix.borges = Author("Jorge Luis Borges", "AR")
+    fix.poe = Author('Edgar Allan Poe', 'US')
 
-    def test_instantiate_bookstore(self):
-        store = Bookstore("Rmotr's bookstore")
-        self.assertEqual(store.name, "Rmotr's bookstore")
-        self.assertEqual(store.get_books(), [])
+    fix.ficciones = Book("Ficciones", author=fix.borges)
+    fix.aleph = Book("The Aleph", author=fix.borges)
+    fix.raven = Book("The Raven", author=fix.poe)
 
-    def test_add_book_to_bookstore(self):
-        store = Bookstore("Rmotr's bookstore")
-        self.assertEqual(store.get_books(), [])
+    return fix
 
-        store.add_book(self.ficciones)
-        self.assertEqual(store.get_books(), [self.ficciones])
+def test_instantiate_bookstore():
+    store = Bookstore("Rmotr's bookstore")
+    assert store.name == "Rmotr's bookstore"
+    assert store.get_books() == []
 
-        store.add_book(self.raven)
-        self.assertEqual(store.get_books(), [self.ficciones, self.raven])
+def test_add_book_to_bookstore(fixtures):
+    store = Bookstore("Rmotr's bookstore")
+    assert store.get_books() == []
 
-        # Test second store
-        second_store = Bookstore("Second bookstore")
-        self.assertEqual(second_store.get_books(), [])
+    store.add_book(fixtures.ficciones)
+    assert store.get_books() == [fixtures.ficciones]
 
-        second_store.add_book(self.raven)
-        self.assertEqual(second_store.get_books(), [self.raven])
+    store.add_book(fixtures.raven)
+    assert store.get_books() == [fixtures.ficciones, fixtures.raven]
 
-    def test_search_bookstore_by_book_title(self):
-        store = Bookstore("Rmotr's bookstore")
+    # Test second store
+    second_store = Bookstore("Second bookstore")
+    assert second_store.get_books() == []
 
-        store.add_book(self.ficciones)
-        store.add_book(self.aleph)
+    second_store.add_book(fixtures.raven)
+    assert second_store.get_books() == [fixtures.raven]
 
-        results = store.search_books(title='XYZ')
-        self.assertEqual(results, [])
+def test_search_bookstore_by_book_title(fixtures):
+    store = Bookstore("Rmotr's bookstore")
 
-        results = store.search_books(title='ficc')
-        self.assertEqual(results, [self.ficciones])
+    store.add_book(fixtures.ficciones)
+    store.add_book(fixtures.aleph)
 
-        results = store.search_books(title='The')
-        self.assertEqual(results, [self.aleph])
+    results = store.search_books(title='XYZ')
+    assert results == []
 
-        store.add_book(self.raven)
-        results = store.search_books(title='The')
-        self.assertEqual(results, [self.aleph, self.raven])
+    results = store.search_books(title='ficc')
+    assert results == [fixtures.ficciones]
 
-    def test_search_bookstore_by_book_author(self):
-        store = Bookstore("Rmotr's bookstore")
-        store.add_book(self.ficciones)
-        store.add_book(self.aleph)
+    results = store.search_books(title='The')
+    assert results == [fixtures.aleph]
 
-        austen = Author('Jane Austen', 'UK')
+    store.add_book(fixtures.raven)
+    results = store.search_books(title='The')
+    assert results == [fixtures.aleph, fixtures.raven]
 
-        results = store.search_books(author=austen)
-        self.assertEqual(results, [])
+def test_search_bookstore_by_book_author(fixtures):
+    store = Bookstore("Rmotr's bookstore")
+    store.add_book(fixtures.ficciones)
+    store.add_book(fixtures.aleph)
 
-        results = store.search_books(author=self.borges)
-        self.assertEqual(results, [self.ficciones, self.aleph])
+    austen = Author('Jane Austen', 'UK')
 
-        results = store.search_books(author=self.poe)
-        self.assertEqual(results, [])
+    results = store.search_books(author=austen)
+    assert results == []
 
-        store.add_book(self.raven)
-        results = store.search_books(author=self.poe)
-        self.assertEqual(results, [self.raven])
+    results = store.search_books(author=fixtures.borges)
+    assert results == [fixtures.ficciones, fixtures.aleph]
+
+    results = store.search_books(author=fixtures.poe)
+    assert results == []
+
+    store.add_book(fixtures.raven)
+    results = store.search_books(author=fixtures.poe)
+    assert results == [fixtures.raven]
