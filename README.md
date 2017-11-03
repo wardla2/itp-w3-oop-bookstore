@@ -40,6 +40,8 @@ Finally, the `Book` and `Author` classes have special relationships between them
 
 ## Recommended path to test
 
+You're welcome to choose your own way to work through this project. But given the structure of the classes, this is the path we suggest you to follow, the order to make the tests pass throughout the different test files.
+
 **1. Author's attributes**
 
 ```bash
