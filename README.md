@@ -37,3 +37,50 @@ store.search_books(title='raven', author=poe)
 ```
 
 Finally, the `Book` and `Author` classes have special relationships between them, and we want you to pay special attention to it.
+
+## Recommended path to test
+
+**1. Author's attributes**
+
+```bash
+$ py.test test_authors.py -k test_author_creation
+```
+
+**2. Books's attributes**
+
+```bash
+$ py.test test_books.py
+```
+
+**3. Author's relationship with books**
+_This is a special one because of the way we have to relate both authors with books and books with authors_
+
+```bash
+$ py.test test_authors.py -k test_get_books_from_author
+```
+
+**4. Bookstore Initialization**
+
+```bash
+$ py.test test_bookstore.py -k test_instantiate_bookstore
+```
+
+**5. Add Book to Bookstore**
+
+```bash
+$ py.test test_bookstore.py -k test_add_book_to_bookstore
+```
+
+
+**6. Search books by title**
+
+```bash
+$ py.test test_bookstore.py -k test_search_bookstore_by_book_title
+```
+
+**7. Search books by author**
+
+```bash
+$ py.test test_bookstore.py -k test_search_bookstore_by_book_author
+```
+

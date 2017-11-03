@@ -12,6 +12,7 @@ def test_author_creation():
     assert poe.name == "Edgar Allan Poe"
     assert poe.nationality == "US"
 
+
 def test_get_books_from_author():
     borges = Author("Jorge Luis Borges", "AR")
     ficciones = Book("Ficciones", author=borges)

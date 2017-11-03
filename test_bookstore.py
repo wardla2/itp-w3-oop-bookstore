@@ -17,10 +17,12 @@ def fixtures():
 
     return fix
 
+
 def test_instantiate_bookstore():
     store = Bookstore("Rmotr's bookstore")
     assert store.name == "Rmotr's bookstore"
     assert store.get_books() == []
+
 
 def test_add_book_to_bookstore(fixtures):
     store = Bookstore("Rmotr's bookstore")
@@ -38,6 +40,7 @@ def test_add_book_to_bookstore(fixtures):
 
     second_store.add_book(fixtures.raven)
     assert second_store.get_books() == [fixtures.raven]
+
 
 def test_search_bookstore_by_book_title(fixtures):
     store = Bookstore("Rmotr's bookstore")
@@ -57,6 +60,7 @@ def test_search_bookstore_by_book_title(fixtures):
     store.add_book(fixtures.raven)
     results = store.search_books(title='The')
     assert results == [fixtures.aleph, fixtures.raven]
+
 
 def test_search_bookstore_by_book_author(fixtures):
     store = Bookstore("Rmotr's bookstore")
