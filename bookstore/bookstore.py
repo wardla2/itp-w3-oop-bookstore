@@ -1,5 +1,6 @@
 class Bookstore(object):
     def __init__(self, name):
+        self.name = name
         self.books = []
     
     def get_books(self):
@@ -9,31 +10,38 @@ class Bookstore(object):
         self.books.append(book)
         
     def search_books(self, title=None, author=None):
+        result = []
         if not author and not title:
-            return None
+            return result
         for book in self.books:
             if not author:
-                if book.title == title:
-                    return book
+                if book.title.lower().find(title.lower()) != -1:
+                    result.append(book)
             elif not title:
                 if book.author == author:
-                    return book
+                    result.append(book)
             else:
-                if book.title == title and book.author == author:
-                    return book
-        return None
+                if book.title.lower().find(title.lower()) != -1 and book.author == author:
+                    result.append(book)
+        return result
         
         
 class Author(object):
     def __init__(self, name, nationality):
         self.name = name
         self.nationality = nationality
+        self.books = []
+    
+    def get_books(self):
+        return self.books
 
 
 class Book(object):
     def __init__(self, title, author=None):
         self.title = title
         self.author = author
+        self.author.books.append(self)
+        
     def __str__(self):
         return 'title: ' + self.title + ', author: ' + self.author.name
         
